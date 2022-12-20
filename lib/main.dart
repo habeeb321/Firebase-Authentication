@@ -1,7 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_authentication/controller/auth_provider.dart';
 import 'package:firebase_authentication/view/login_screen/login_form.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -10,13 +16,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => AuthProvider(FirebaseAuth.instance)),
+        StreamProvider(
+            create: (context) => context.watch<AuthProvider>().stream(),
+            initialData: null)
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const LoginForm(),
       ),
-      home: const LoginForm(),
     );
   }
 }
