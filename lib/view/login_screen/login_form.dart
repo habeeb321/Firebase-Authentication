@@ -1,13 +1,39 @@
+import 'package:firebase_authentication/controller/auth_provider.dart';
 import 'package:firebase_authentication/core/const.dart';
+import 'package:firebase_authentication/view/register_form/register_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+
+  @override
+  void dispose() {
+    email.dispose();
+    pass.dispose();
+    super.dispose();
+  }
+
+  Future<void> signIn(AuthProvider provider) async {
+    final msg = await provider.signIn(email.text, pass.text);
+    if (msg == '') return;
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
 
   @override
   Widget build(BuildContext context) {
     final cx = MediaQuery.of(context).size;
+    final authProvider = context.watch<AuthProvider>();
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -36,16 +62,25 @@ class LoginForm extends StatelessWidget {
                         fontSize: 36,
                       ),
                     ),
+                    const Text(
+                      'Login',
+                      style: TextStyle(
+                        color: clrText,
+                        fontSize: 18,
+                      ),
+                    ),
                     height10,
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: email,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         label: Text('Email'),
                       ),
                     ),
                     height20,
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: pass,
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         label: Text('Password'),
                       ),
@@ -55,7 +90,10 @@ class LoginForm extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const RegisterForm())),
                           child: const Text(
                             'Register',
                             style: TextStyle(
@@ -76,13 +114,18 @@ class LoginForm extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Sign in'),
+                    if (authProvider.loading)
+                      const CircularProgressIndicator(
+                        strokeWidth: 2,
                       ),
-                    ),
+                    if (!authProvider.loading)
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () => signIn(authProvider),
+                          child: const Text('Sign in'),
+                        ),
+                      ),
                     height10,
                     Row(
                       children: [

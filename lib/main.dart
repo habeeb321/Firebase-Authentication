@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_authentication/controller/auth_provider.dart';
-import 'package:firebase_authentication/view/login_screen/login_form.dart';
+import 'package:firebase_authentication/view/home_page/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             create: (_) => AuthProvider(FirebaseAuth.instance)),
         StreamProvider(
             create: (context) => context.watch<AuthProvider>().stream(),
-            initialData: null)
+            initialData: null),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const LoginForm(),
+        home: const HomePage(),
       ),
     );
   }
