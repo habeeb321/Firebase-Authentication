@@ -1,16 +1,29 @@
-# firebase_authentication
+# Firebase Authentication
 
-A new Flutter project.
+## Overview
+
+Firebase Authentication is a Flutter project demonstrating the integration of Firebase for user authentication. Learn how to incorporate secure user sign-up and login functionalities into your Flutter applications using Firebase services.
+
+## Features
+
+- User registration with email and password
+- User login with email and password
+- Firebase authentication integration
+
+## Key Tools
+
+- Firebase Authentication
+- Flutter
+- Provider for state management
+
+## Project Structure
+
+- `lib/`: Contains the main Flutter application code
+- `assets/`: Include any necessary assets such as images or fonts
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Clone the repository:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+git clone https://github.com/habeeb321/Firebase-Authentication.git
